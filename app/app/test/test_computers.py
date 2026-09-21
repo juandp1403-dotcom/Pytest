@@ -1,4 +1,4 @@
-def test_index(client):
+def test_index(client, computer):
     response = client.get('/computers/')
     assert response.status_code == 200
     assert b"Dell" in response.data

@@ -54,7 +54,7 @@ def return_book(id):
     loan = Loan.query.get_or_404(id)
     loan.status = 'Returned'
     
-    if datetime.now() > loan.returnDate:
+    if loan.returnDate and datetime.now() > loan.returnDate:
         days_late = (datetime.now() - loan.returnDate).days
         loan.fine = days_late * 1.0  # Multa de 1.0 por día de retraso
     

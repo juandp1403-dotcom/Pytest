@@ -22,7 +22,7 @@
             <td>{{ loan.book.titleBook }}</td>
             <td>{{ loan.user.nameUser }}</td>
             <td>{{ loan.loanDate.strftime('%Y-%m-%d') }}</td>
-            <td>{{ loan.returnDate.strftime('%Y-%m-%d') }}</td>
+            <td>{{ loan.returnDate.strftime('%Y-%m-%d') if loan.returnDate else 'N/A' }}</td>
             <td>{{ loan.status }}</td>
             <td>{{ loan.fine }}</td>
             <td>

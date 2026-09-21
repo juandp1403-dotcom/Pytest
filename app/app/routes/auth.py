@@ -13,7 +13,7 @@ def login():
         if (user := User.query.filter_by(nameUser=nameUser, passwordUser=passwordUser).first()):
             login_user(user)
             flash("Login successful!", "success")
-            return redirect(url_for('user.index'))
+            return redirect(url_for('auth.dashboard'))
         
         flash('Invalid credentials. Please try again.', 'danger')
     

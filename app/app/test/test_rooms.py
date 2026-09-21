@@ -1,4 +1,4 @@
-def test_index(client):
+def test_index(client, room):
     response = client.get('/room/')
     assert response.status_code == 200
     assert b"Room A" in response.data
