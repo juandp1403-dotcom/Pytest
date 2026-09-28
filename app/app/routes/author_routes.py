@@ -11,7 +11,7 @@ def index():
 
 @bp.route('/list/<int:id>', methods=['GET', 'POST'])
 def list(id):
-    author = Author.query.get_or_404(id)
+    author = db.get_or_404(Author, id)
     books = author.books
     return render_template('authors/list.html', books=books)
 
@@ -30,7 +30,7 @@ def add():
 
 @bp.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit(id):
-    author = Author.query.get_or_404(id)
+    author = db.get_or_404(Author, id)
 
     if request.method == 'POST':
         author.nameAuthor = request.form['nameAuthor']
@@ -43,7 +43,7 @@ def edit(id):
 
 @bp.route('/delete/<int:id>')
 def delete(id):
-    author = Author.query.get_or_404(id)
+    author = db.get_or_404(Author, id)
     db.session.delete(author)
     db.session.commit()
 

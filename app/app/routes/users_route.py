@@ -25,7 +25,7 @@ def add():
 
 @bp.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit(id):
-    user = User.query.get_or_404(id)
+    user = db.get_or_404(User, id)
     if request.method == 'POST':
         user.nameUser = request.form['nameUser']
         user.passwordUser = request.form['passwordUser']
@@ -35,12 +35,12 @@ def edit(id):
     return render_template('users/edit.html', user=user)
 @bp.route('/detail/<int:id>')
 def detail(id):
-    user = User.query.get_or_404(id)
+    user = db.get_or_404(User, id)
     return render_template('users/detail.html', user=user)
 
 @bp.route('/delete/<int:id>')
 def delete(id):
-    user = User.query.get_or_404(id)    
+    user = db.get_or_404(User, id)
     db.session.delete(user)
     db.session.commit()
     return redirect(url_for('user.index'))
@@ -48,7 +48,7 @@ def delete(id):
 @bp.route('/qr/<int:id>')
 def generate_qr(id):
     print("Entrando a la ruta de generación de QR para el usuario con ID:", id)
-    user = User.query.get_or_404(id)
+    user = db.get_or_404(User, id)
     qr_code_base64 = user.generate_qr()
     # Decodificar la imagen del QR desde base64
     qr_code_img = base64.b64decode(qr_code_base64)
@@ -78,7 +78,7 @@ def read_qr():
     if not user_id:
         return "El código QR no contiene un ID de usuario válido", 400
 
-    user = User.query.get(user_id)
+    user = db.session.get(User, user_id)
     if not user:
         return "Usuario no encontrado", 404
 

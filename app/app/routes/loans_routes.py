@@ -31,7 +31,7 @@ def add():
 
 @bp.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit(id):
-    loan = Loan.query.get_or_404(id)
+    loan = db.get_or_404(Loan, id)
     
     if request.method == 'POST':
         loan.returnDate = datetime.strptime(request.form['returnDate'], '%Y-%m-%d')
@@ -44,14 +44,14 @@ def edit(id):
 
 @bp.route('/delete/<int:id>')
 def delete(id):
-    loan = Loan.query.get_or_404(id)
+    loan = db.get_or_404(Loan, id)
     db.session.delete(loan)
     db.session.commit()
     return redirect(url_for('loan.index'))
 
 @bp.route('/return/<int:id>')
 def return_book(id):
-    loan = Loan.query.get_or_404(id)
+    loan = db.get_or_404(Loan, id)
     loan.status = 'Returned'
     
     if loan.returnDate and datetime.now() > loan.returnDate:

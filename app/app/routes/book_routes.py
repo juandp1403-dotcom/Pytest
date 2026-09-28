@@ -27,7 +27,7 @@ def add():
 
 @bp.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit(id):
-    book = Book.query.get_or_404(id)
+    book = db.get_or_404(Book, id)
 
     if request.method == 'POST':
         book.titleBook = request.form['titleBook']
@@ -40,7 +40,7 @@ def edit(id):
 
 @bp.route('/delete/<int:id>')
 def delete(id):
-    book = Book.query.get_or_404(id)    
+    book = db.get_or_404(Book, id)
     db.session.delete(book)
     db.session.commit()
     return redirect(url_for('book.index'))

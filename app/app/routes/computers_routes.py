@@ -28,14 +28,14 @@ def add():
 
 @bp.route('/delete/<int:id>', methods=['POST'])
 def delete(id):
-    computer = Computer.query.get_or_404(id)
+    computer = db.get_or_404(Computer, id)
     db.session.delete(computer)
     db.session.commit()
     return redirect(url_for('computers.index'))
 
 @bp.route('/update/<int:id>', methods=['GET', 'POST'])
 def update(id):
-    computer = Computer.query.get_or_404(id)
+    computer = db.get_or_404(Computer, id)
     if request.method == 'POST':
         computer.brandComputer = request.form['brandComputer']
         computer.modelComputer = request.form['modelComputer']

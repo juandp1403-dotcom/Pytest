@@ -23,7 +23,7 @@ def add():
 
 @bp.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit(id):
-    room = Room.query.get_or_404(id)
+    room = db.get_or_404(Room, id)
     if request.method == 'POST':
         room.name = request.form['name']
         room.description = request.form['description']
@@ -34,7 +34,7 @@ def edit(id):
 
 @bp.route('/delete/<int:id>')
 def delete(id):
-    room = Room.query.get_or_404(id)
+    room = db.get_or_404(Room, id)
     db.session.delete(room)
     db.session.commit()
     return redirect(url_for('room.index'))

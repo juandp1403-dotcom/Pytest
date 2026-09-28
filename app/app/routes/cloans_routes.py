@@ -3,7 +3,7 @@ from app import db
 from app.models.cloans import ComputerLoan
 from app.models.computers import Computer
 from app.models.users import User
-from datetime import datetime
+from datetime import datetime, timezone
 
 bp = Blueprint('cloans', __name__, url_prefix='/cloans')
 
@@ -22,7 +22,7 @@ def add():
     if request.method == 'POST':
         computerId = request.form['computerId']
         userId = request.form['userId']
-        loanDate = parse_date(request.form.get('loanDate')) or datetime.utcnow()
+        loanDate = parse_date(request.form.get('loanDate')) or datetime.now(timezone.utc)
         returnDate = parse_date(request.form.get('returnDate'))
         status = request.form.get('status', 'Active')
         
@@ -43,7 +43,7 @@ def add():
 
 @bp.route('/update/<int:id>', methods=['GET', 'POST'])
 def edit(id):
-    loan = ComputerLoan.query.get_or_404(id)
+    loan = db.get_or_404(ComputerLoan, id)
     if request.method == 'POST':
         loan.computerId = request.form['computerId']
         loan.userId = request.form['userId']
@@ -59,15 +59,15 @@ def edit(id):
 
 @bp.route('/delete/<int:id>', methods=['POST'])
 def delete(id):
-    loan = ComputerLoan.query.get_or_404(id)
+    loan = db.get_or_404(ComputerLoan, id)
     db.session.delete(loan)
     db.session.commit()
     return redirect(url_for('cloans.index'))
 
 @bp.route('/return/<int:id>', methods=['POST'])
 def return_computer(id):
-    loan = ComputerLoan.query.get_or_404(id)
+    loan = db.get_or_404(ComputerLoan, id)
     loan.status = 'Returned'
-    loan.returnDate = datetime.utcnow()
+    loan.returnDate = datetime.now(timezone.utc)
     db.session.commit()
     return redirect(url_for('cloans.index'))

@@ -1,11 +1,11 @@
 from app import db
-from datetime import datetime
+from datetime import datetime, timezone
 
 class ComputerLoan(db.Model):
     __tablename__ = 'computer_loans'
 
     idLoan = db.Column(db.Integer, primary_key=True)
-    loanDate = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    loanDate = db.Column(db.DateTime, nullable=False, default=lambda: datetime.now(timezone.utc))
     returnDate = db.Column(db.DateTime, nullable=True)
     status = db.Column(db.String(20), nullable=False, default='Active')
 
